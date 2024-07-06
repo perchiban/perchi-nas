@@ -1,0 +1,117 @@
+version: "3.7"
+services:
+  radarr:
+    container_name: radarr
+    image: ghcr.io/hotio/radarr
+    ports:
+      - "7878:7878"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/radarr:/config
+      - /mnt/nfs_clientshare:/data/media
+      - /mnt/nfs_truenas:/data/medianew
+    restart: unless-stopped
+  radarr-4k:
+    container_name: radarr-4k
+    image: ghcr.io/hotio/radarr
+    ports:
+      - "7777:7878"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/radarr-4k:/config
+      - /mnt/nfs_clientshare:/data/media
+      - /mnt/nfs_truenas:/data/medianew
+    restart: unless-stopped
+  sonarr:
+    container_name: sonarr
+    image: ghcr.io/hotio/sonarr
+    ports:
+      - "8989:8989"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/sonarr:/config
+      - /mnt/nfs_clientshare:/data/media
+      - /mnt/nfs_truenas:/data/medianew
+    restart: unless-stopped
+  sonarr-anime:
+    container_name: sonarr-anime
+    image: ghcr.io/hotio/sonarr
+    ports:
+      - "9999:8989"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/sonarr-anime:/config
+      - /mnt/nfs_clientshare:/data/media
+      - /mnt/nfs_truenas:/data/medianew
+    restart: unless-stopped
+  bazarr:
+    container_name: bazarr
+    image: ghcr.io/hotio/bazarr
+    ports:
+      - "6767:6767"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/bazarr:/config
+      - /mnt/nfs_clientshare:/data/media
+      - /mnt/nfs_truenas:/data/medianew
+    restart: unless-stopped
+  bazarr-anime:
+    container_name: bazarr-anime
+    image: ghcr.io/hotio/bazarr
+    ports:
+      - "6868:6767"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/bazarr-anime:/config
+      - /mnt/nfs_clientshare:/data/media
+      - /mnt/nfs_truenas:/data/medianew
+    restart: unless-stopped
+  prowlarr:
+    container_name: prowlarr-anime
+    image: ghcr.io/hotio/prowlarr
+    ports:
+      - "9696:9696"
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/prowlarr:/config
+    restart: unless-stopped
+  overseerr:
+    container_name: overseerr
+    image: sctx/overseerr:latest
+    ports:
+      - "5055:5055"
+    environment:
+      - TZ=America/Buenos_Aires
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /docker/appdata/overseerr/config:/app/config
+    restart: unless-stopped

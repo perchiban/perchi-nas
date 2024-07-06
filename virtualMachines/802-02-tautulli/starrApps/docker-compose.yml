@@ -1,0 +1,50 @@
+version: "3.7"
+services:
+  plex-meta-manager:
+    container_name: plex-meta-manager
+    image: meisnate12/plex-meta-manager
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - PMM_CONFIG=/config/config.yml
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/plex-meta-manager:/config:rw
+    restart: unless-stopped
+    command: ["-r"]
+  tautulli:
+    image: ghcr.io/tautulli/tautulli
+    container_name: tautulli
+    restart: unless-stopped
+    ports:
+      - 8181:8181
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    volumes:
+      - /docker/appdata/tautulli:/config
+    restart: unless-stopped
+  plexautolanguages:
+    image: remirigal/plex-auto-languages:latest
+    environment:
+      - PLEX_URL=
+      - PLEX_TOKEN=
+      - TZ=America/Buenos_Aires
+    volumes:
+      - /docker/appdata/plexautolanguages:/config
+  deemix:
+    image: registry.gitlab.com/bockiii/deemix-docker
+    container_name: deemix
+    volumes:
+      - /mnt/nfs_clientshare/sdb/MusicDeemix:/downloads
+      - /docker/appdata/deemix:/config
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - UMASK_SET=022
+      - DEEMIX_SINGLE_USER=true
+    ports:
+      - 6595:6595

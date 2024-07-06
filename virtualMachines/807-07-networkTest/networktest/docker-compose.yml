@@ -1,0 +1,28 @@
+version: "3"
+services:
+  smokeping:
+    image: lscr.io/linuxserver/smokeping:latest
+    container_name: smokeping
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+    volumes:
+      - ./smokeping/config:/config
+      - ./smokeping/data:/data
+    ports:
+      - 8001:80
+    restart: unless-stopped
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+      - DB_CONNECTION=sqlite
+    volumes:
+      - ./speedtest-tracker/config:/config
+    ports:
+      - 8002:80
+    restart: unless-stopped

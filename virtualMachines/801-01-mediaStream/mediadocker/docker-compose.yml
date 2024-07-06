@@ -1,0 +1,45 @@
+version: "3"
+services:
+  plex:
+    container_name: plex
+    image: lscr.io/linuxserver/plex:latest
+    network_mode: "host"
+    environment:
+      - PLEX_CLAIM=""
+      - PUID=1000
+      - PGID=1000
+      - VERSION=docker
+      - TZ=America/Buenos_Aires
+      - UMASK=000
+    restart: 'unless-stopped'
+    volumes:
+      - /docker/appdata/plex:/config
+      - /dev/shm:/transcode
+      - /mnt/nfs_clientshare:/data/media
+      - /mnt/nfs_truenas:/data/medianew
+    devices:
+    - "/dev/dri:/dev/dri"
+  navidrome:
+    container_name: navidrome
+    image: deluan/navidrome:latest
+    ports:
+      - "4533:4533"
+    restart: unless-stopped
+    environment:
+      ND_SCANSCHEDULE: 1h
+      ND_LOGLEVEL: info
+      ND_SESSIONTIMEOUT: 24h
+      ND_BASEURL: ""
+    volumes:
+      - /docker/appdata/navidrome:/data
+      - /mnt/nfs_clientshare/sdb/MusicDeemix:/music:ro
+  audiobookshelf:
+    image: ghcr.io/advplyr/audiobookshelf:latest
+    ports:
+      - 13378:80
+    restart: unless-stopped
+    volumes:
+      - /mnt/nfs_truenas/audio/audiobooks:/audiobooks
+      - /mnt/nfs_truenas/audio/podcasts:/podcasts
+      - /docker/appdata/audiobookshelf/config:/config
+      - /docker/appdata/audiobookshelf/metadata:/metadata

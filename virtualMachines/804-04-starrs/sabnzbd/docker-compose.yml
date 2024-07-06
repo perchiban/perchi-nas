@@ -1,0 +1,17 @@
+version: "3"
+services:
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    restart: always
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Buenos_Aires
+    volumes:
+      - /docker/appdata/sabnzbd/config:/config
+      - /mnt/nfs_truenas/sabnzbd/downloads:/downloads
+      - /mnt/nfs_truenas/sabnzbd/incomplete-downloads:/incomplete-downloads
+    ports:
+      - 8000:8080
+    restart: unless-stopped
