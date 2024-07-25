@@ -1,0 +1,1 @@
+0 0 * * * echo $(date +\%Y-\%m-\%d) $(curl -4 https://ifconfig.co 2>/dev/null) >> ~/ipv4_public.txt 2>&1
